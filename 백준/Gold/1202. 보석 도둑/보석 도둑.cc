@@ -8,21 +8,11 @@
 #include <set>
 using namespace std;
 
-
-bool compare(int i, int j) {
-	return j < i;
-}
-struct cmp{
-	bool operator()(tuple<int, int> i, tuple<int, int> j) {
-		if (get<0>(j) != get<0>(i))
-			return get<0>(j) > get<0>(i);
-		else
-			return get<1>(j) > get<1>(i);
-	}
-};
+//multiset 이용해야 함
+//lower_bound 이용한 빠른 탐색
 
 int N, K;
-priority_queue<tuple<int, int>, vector<tuple<int, int>>> jewelVM;
+priority_queue<tuple<int, int>> jewelVM;
 multiset<int> C;
 
 int main() {
