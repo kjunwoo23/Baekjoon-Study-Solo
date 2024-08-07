@@ -51,8 +51,6 @@ void BFS(int start) {
 
 
 int main() {
-	int ans = 0;
-
 	cin >> N >> M >> V;
 
 	int first, second;
