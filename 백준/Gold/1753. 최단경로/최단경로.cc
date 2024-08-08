@@ -34,10 +34,9 @@ void BFS(int start) {
 		int curNode = get<1>(waitList.top());
 		waitList.pop();
 
-		if (dist[curNode] < curDist) continue;
 		for (int i = 0; i < edges[curNode].size(); i++) {
-			if (curDist + get<0>(edges[curNode][i]) < dist[get<1>(edges[curNode][i])]) {
-				dist[get<1>(edges[curNode][i])] = curDist + get<0>(edges[curNode][i]);
+			if (dist[curNode] + get<0>(edges[curNode][i]) < dist[get<1>(edges[curNode][i])]) {
+				dist[get<1>(edges[curNode][i])] = dist[curNode] + get<0>(edges[curNode][i]);
 				waitList.emplace(dist[get<1>(edges[curNode][i])], get<1>(edges[curNode][i]));
 			}
 		}
