@@ -1,49 +1,59 @@
 #include <iostream>
 #include <algorithm>
-#include <queue>
-#include <string.h>
-#include <limits.h>
-#include <vector>
-#include <math.h>
+#include <cstdio>
+#include <functional>
+#include <climits>
+#include <cmath>
 #include <stack>
-#include <bitset>
-#include <string>
+#include <queue>
+#include <vector>
+#include <tuple>
+#include <list>
 #include <set>
 #include <map>
-#include <unordered_map>
-#include <sstream>
-#include <cstdlib>
+#pragma warning(disable:4996)
 using namespace std;
 
 //희소 배열
-int memo[22][500001];
-int m, q, n, x;
+int m;
+int Q;
+int memo[20][500001];
+
+void fillMemo() {
+	for (int logN = 1; logN <= 19; logN++) {
+		for (int i = 1; i < m + 1; i++) {
+			int tmp = memo[logN - 1][i];
+			memo[logN][i] = memo[logN - 1][tmp];
+		}
+	}
+}
+
+int find(int n, int x) {
+	int cur = x;
+
+	for (int i = 19; i >= 0; i--) {
+		if (n & (1 << i))
+			cur = memo[i][cur];
+	}
+	return cur;
+}
 
 int main() {
 	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
+	cin.tie(0); cout.tie(0);
 
 	cin >> m;
 	for (int i = 1; i < m + 1; i++)
 		cin >> memo[0][i];
 
-	//fillMemo();
-	for (int logN = 1; logN < 22; logN++) {
-		for (int i = 1; i < m + 1; i++) {
-			//int tmp = memo[logN - 1][i];
-			memo[logN][i] = memo[logN - 1][memo[logN - 1][i]];
-		}
-	}
+	fillMemo();
 
-	cin >> q;
+	cin >> Q;
 
-	for (int i = 1; i < q + 1; i++) {
+	for (int i = 0; i < Q; i++) {
+		int n, x;
 		cin >> n >> x;
-
-		for (int j = 0; j < 22; j++) {
-			if (n & (1 << j)) x = memo[j][x];
-		}
-		cout << x << "\n";
+		cout << find(n, x) << "\n";
 	}
 
 	return 0;
