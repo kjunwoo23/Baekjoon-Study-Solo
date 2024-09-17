@@ -13,34 +13,38 @@
 #include <unordered_map>
 #include <sstream>
 #include <cstdlib>
-#define all(v) v.begin(), v.end()
-#define pii pair<int, int>
-#define make_unique(v) v.erase(unique(v.begin(), v.end()), v.end())
-typedef long long ll;
 using namespace std;
 
-int table[500001][22];
+//희소 배열
+int memo[22][500001];
 int m, q, n, x;
 
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
 
-    cin >> m;
-    for (int i = 1; i <= m; i++)
-        cin >> table[i][0];
+	cin >> m;
+	for (int i = 1; i < m + 1; i++)
+		cin >> memo[0][i];
 
-    for (int j = 1; j < 22; j++)
-        for (int i = 1; i <= m; i++)
-            table[i][j] = table[table[i][j - 1]][j - 1];
+	//fillMemo();
+	for (int logN = 1; logN < 22; logN++) {
+		for (int i = 1; i < m + 1; i++) {
+			//int tmp = memo[logN - 1][i];
+			memo[logN][i] = memo[logN - 1][memo[logN - 1][i]];
+		}
+	}
 
-    cin >> q;
-    for (int i = 1; i <= q; i++) {
-        cin >> n >> x;
-        for (int j = 0; j < 22; j++)
-            if (n & (1<<j)) x = table[x][j];
-        cout << x << "\n";
-    }
+	cin >> q;
 
-    return 0;
+	for (int i = 1; i < q + 1; i++) {
+		cin >> n >> x;
+
+		for (int j = 0; j < 22; j++) {
+			if (n & (1 << j)) x = memo[j][x];
+		}
+		cout << x << "\n";
+	}
+
+	return 0;
 }
