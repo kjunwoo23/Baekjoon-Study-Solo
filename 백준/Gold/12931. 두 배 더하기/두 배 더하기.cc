@@ -28,14 +28,9 @@ void makeEven() {
 		}
 }
 void divideWithTwo() {
-	bool flag = false;
-	for (int i = 0; i < N; i++) {
-		if (arr[i] != 0)
-			flag = true;
+	for (int i = 0; i < N; i++) 
 		arr[i] /= 2;
-	}
-	if (flag)
-		cnt++;
+	cnt++;
 }
 
 int getSum() {
@@ -55,8 +50,10 @@ int main() {
 	for (int i = 0; i < N; i++)
 		cin >> arr[i];
 
-	while (getSum() != 0) {
+	while (true) {
+		if (getSum() == 0) break;
 		makeEven();
+		if (getSum() == 0) break;
 		divideWithTwo();
 	}
 
