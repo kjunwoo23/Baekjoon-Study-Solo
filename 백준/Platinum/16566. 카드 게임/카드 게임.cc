@@ -23,6 +23,7 @@ vector<int> minsoo;
 int parent[4000001];
 int tmp;
 
+// 부모 찾기
 int FindParent(int x) {
 	if (parent[x] == x)
 		return x;
@@ -30,6 +31,7 @@ int FindParent(int x) {
 	return parent[x] = FindParent(parent[x]);
 }
 
+// 이미 선택된 숫자는 바롣 다음 숫자랑 부모 합치기
 void UnionParent(int x, int y) {
 	x = FindParent(x);
 	y = FindParent(y);
@@ -53,6 +55,7 @@ int main() {
 
 	for (int i = 0; i < K; i++) {
 		cin >> tmp;
+		// 이분 탐색
 		int idx = upper_bound(minsoo.begin(), minsoo.end(), tmp) - minsoo.begin();
 		int f = FindParent(idx);
 		cout << minsoo[f] << endl;
