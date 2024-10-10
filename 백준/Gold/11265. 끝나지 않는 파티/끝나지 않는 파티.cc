@@ -20,6 +20,7 @@ using namespace std;
 int N, M;
 int T[501][501];
 
+// 루트 간소화
 void shorten() {
 	for (int k = 1; k <= N; k++)
 		for (int i = 1; i <= N; i++)
