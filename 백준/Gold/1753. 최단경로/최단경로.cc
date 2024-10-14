@@ -14,7 +14,6 @@
 #pragma warning(disable:4996)
 using namespace std;
 
-
 int V;
 int E;
 int K;
