@@ -2,9 +2,9 @@
 using namespace std;
 #define endl "\n"
 
-long long N, S;
-long long dp[300001][2];
-vector<pair<long long, long long>> drawings;
+int N, S;
+int dp[300001][2];
+vector<pair<int, int>> drawings;
 
 int main() {
     std::ios_base::sync_with_stdio(false);
@@ -13,7 +13,7 @@ int main() {
 
     cin >> N >> S;
 
-    long long H, C;
+    int H, C;
     for (int i = 0; i < N; i++) {
         cin >> H >> C;
         drawings.emplace_back(H, C);
@@ -27,7 +27,7 @@ int main() {
 
         dp[i][0] = max(dp[i - 1][0], dp[i - 1][1]);
 
-        int limit = upper_bound(drawings.begin(), drawings.begin() + i, make_pair(drawings[i].first - S, (long long)1001)) - drawings.begin() - 1;
+        int limit = upper_bound(drawings.begin(), drawings.begin() + i, make_pair(drawings[i].first - S, 1001)) - drawings.begin() - 1;
         
         if (limit < 0)
             dp[i][1] = drawings[i].second;
