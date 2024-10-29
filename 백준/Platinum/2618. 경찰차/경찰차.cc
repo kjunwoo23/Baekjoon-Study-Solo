@@ -5,7 +5,6 @@ using namespace std;
 int N, W;
 pair<int, int> cases[1001];
 int dp[1001][1001];
-int police[1001];
 
 int calcDist(int case1, int case2) {
     int x, y;
