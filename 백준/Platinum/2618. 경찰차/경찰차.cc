@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define endl "\n"
 
 using namespace std;
 
@@ -6,6 +7,7 @@ int N, W;
 pair<int, int> cases[1001];
 int dp[1001][1001];
 
+// 두 사건 사이 거리 계산
 int calcDist(int case1, int case2) {
     int x, y;
     if (case1 == -1) {
@@ -23,14 +25,15 @@ int calcDist(int case1, int case2) {
     return abs(x) + abs(y);
 }
 
+// 경찰차1이 a사건, 경찰차2가 b사건 해결했을 때 사건 종결까지 최소한의 경로
 int writeDP(int a, int b) {
     if (a == W || b == W) return 0;
     if (dp[a][b] != -1) return dp[a][b];
 
     int next = max(a, b) + 1;
 
-    int tmp1 = writeDP(next, b);
-    int tmp2 = writeDP(a, next);
+    int tmp1 = writeDP(next, b);    // 다음 사건을 경찰차1이 해결
+    int tmp2 = writeDP(a, next);    // 다음 사건을 경찰차2가 해결
 
     if (a == 0) tmp1 += calcDist(-1, next);
     else tmp1 += calcDist(a, next);
@@ -48,8 +51,12 @@ void printDP(int a, int b) {
     int next = max(a, b) + 1;
 
     int tmp1, tmp2;
+
+    // (a, b)부터 사건 종결까지의 거리 (단, 바로 다음 사건은 경찰차 1이 해결)
     if (a != 0)    tmp1 = dp[next][b] + calcDist(a, next);
     else    tmp1 = dp[next][b] + calcDist(-1, next);
+
+    // (a, b)부터 사건 종결까지의 거리 (단, 바로 다음 사건은 경찰차 2가 해결)
     if (b != 0)    tmp2 = dp[a][next] + calcDist(b, next);
     else    tmp2 = dp[a][next] + calcDist(-2, next);
 
@@ -76,7 +83,7 @@ int main() {
         cin >> cases[i].first >> cases[i].second;
 
     cout << writeDP(0, 0) << endl;
-    
+
     printDP(0, 0);
 
     return 0;
