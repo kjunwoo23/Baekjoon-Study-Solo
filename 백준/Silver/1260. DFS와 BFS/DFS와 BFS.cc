@@ -1,78 +1,65 @@
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <functional>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <tuple>
-#include <list>
-#include <set>
-#include <map>
+#include <bits/stdc++.h>
+#include <unordered_map>
+
 using namespace std;
 
-int N;
-int M, V;
+int N, M, V;
 
-vector<int> graph[1001];
+vector<int> adjNodes[1001];
 bool visited[1001];
 
-vector<int> dfs, bfs;
-
 void DFS(int node) {
-	if (visited[node]) return;
-	else {
-		visited[node] = true;
-		dfs.emplace_back(node);
-	}
+    if (visited[node]) return;
+    
+    visited[node] = true;
+    cout << node << ' ';
 
-	for (int i = 0; i < graph[node].size(); i++)
-		DFS(graph[node][i]);
+    for (int i = 0; i < adjNodes[node].size(); i++)
+        DFS(adjNodes[node][i]);
 }
 
 void BFS(int start) {
-	queue<int> waitList;
-	waitList.emplace(start);
-	visited[start] = true;
+    queue<int> waitList;
 
-	while (!waitList.empty()) {
-		int curNode = waitList.front();
-		waitList.pop();
-		bfs.emplace_back(curNode);
+    waitList.emplace(start);
+    visited[start] = true;
 
-		for (int i = 0; i < graph[curNode].size(); i++) {
-			if (!visited[graph[curNode][i]]) {
-				waitList.emplace(graph[curNode][i]);
-				visited[graph[curNode][i]] = true;
-			}
-		}
-	}
+    while (!waitList.empty()) {
+        int curNode = waitList.front();
+        waitList.pop();
+        cout << curNode << ' ';
+
+        for (int i = 0; i < adjNodes[curNode].size(); i++) {
+            if (visited[adjNodes[curNode][i]]) continue;
+            visited[adjNodes[curNode][i]] = true;
+            waitList.emplace(adjNodes[curNode][i]);
+        }
+    }
 }
 
+int main()
+{
+    cin.tie(NULL); cout.tie(NULL);
+    ios_base::sync_with_stdio(0);
 
-int main() {
-	cin >> N >> M >> V;
+    cin >> N >> M >> V;
+    
+    int tmp1, tmp2;
+    for (int i = 0; i < M; i++) {
+        cin >> tmp1 >> tmp2;
+        adjNodes[tmp1].emplace_back(tmp2);
+        adjNodes[tmp2].emplace_back(tmp1);
+    }
 
-	int first, second;
-	for (int i = 0; i < M; i++) {
-		cin >> first >> second;
-		graph[first].emplace_back(second);
-		graph[second].emplace_back(first);
-	}
-	for (int i = 0; i < N + 1; i++)
-		sort(graph[i].begin(), graph[i].end());
+    for (int i = 1; i <= N; i++)
+        sort(adjNodes[i].begin(), adjNodes[i].end());
 
-	DFS(V);
-	fill(visited, visited + N + 1, false);
-	BFS(V);
+    DFS(V);
 
-	for (int i = 0; i < dfs.size(); i++)
-		cout << dfs[i] << " ";
-	
-	cout << endl;
+    memset(visited, false, sizeof(visited));
+    cout << endl;
 
-	for (int i = 0; i < bfs.size(); i++)
-		cout << bfs[i] << " ";
+    BFS(V);
 
-	return 0;
+    return 0;
 }
