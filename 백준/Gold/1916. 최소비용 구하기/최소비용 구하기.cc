@@ -18,7 +18,6 @@ void BFS() {
         pq.pop();
 
         if (curPrice > dist[curNode]) continue;
-        if (dist[curNode] == INT_MAX / 2) continue;
 
         for (int i = 0; i < edges[curNode].size(); i++) {
             if (dist[edges[curNode][i].second] > dist[curNode] + edges[curNode][i].first) {
