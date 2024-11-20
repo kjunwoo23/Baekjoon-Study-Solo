@@ -42,8 +42,6 @@ int main() {
         else
             while (*iterR == 'R' && iterL < iterR)
                 rightRCnt++, iterR--;
-
-        //ans = max(ans, min(leftKCnt, rightKCnt) * 2 + rCnt - leftRCnt - rightRCnt);
     }
 
     cout << ans;
