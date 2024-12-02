@@ -47,10 +47,6 @@ int main() {
         edges[u].emplace_back(w, v);
     }
 
-    for (int i = 1; i <= V; i++)
-        sort(edges[i].begin(), edges[i].end());
-
-
     fill(&dist[0], &dist[20001], INT_MAX / 2);
 
     BFS();
