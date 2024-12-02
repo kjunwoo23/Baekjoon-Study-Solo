@@ -1,54 +1,63 @@
 #include <bits/stdc++.h>
+#define endl '\n'
+typedef long long ll;
 
 using namespace std;
 
-int N, M, start, fin;
-vector<pair<int, int>> edges[100001];
+void init() {
+    cin.tie(0);
+    cout.tie(0);
+    ios_base::sync_with_stdio(false);
+}
 
-int dist[1001];
+int V, E, K, T;
+int dist[20001];
+vector<pair<int, int>> edges[20001];
+
 
 void BFS() {
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    pq.emplace(0, start);
-    dist[start] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> waitList;
 
-    while (!pq.empty()) {
-        int curPrice = pq.top().first;
-        int curNode = pq.top().second;
-        pq.pop();
+    waitList.emplace(0, K);
+    dist[K] = 0;
 
-        if (curPrice > dist[curNode]) continue;
+    while (!waitList.empty()) {
+        int curDist = waitList.top().first;
+        int curNode = waitList.top().second;
+        waitList.pop();
 
         for (int i = 0; i < edges[curNode].size(); i++) {
-            if (dist[edges[curNode][i].second] > dist[curNode] + edges[curNode][i].first) {
-                dist[edges[curNode][i].second] = dist[curNode] + edges[curNode][i].first;
-                pq.emplace(dist[edges[curNode][i].second], edges[curNode][i].second);
-            }            
+            if (dist[edges[curNode][i].second] > curDist + edges[curNode][i].first) {
+                dist[edges[curNode][i].second] = curDist + edges[curNode][i].first;
+                waitList.emplace(curDist + edges[curNode][i].first, edges[curNode][i].second);
+
+            }
         }
     }
 }
 
+int main() {
+    init();
 
-int main()
-{
-    cin.tie(NULL); cout.tie(NULL);
-    ios_base::sync_with_stdio(false);
+    cin >> V >> E;
 
-    cin >> N >> M;
-
-    fill(&dist[0], &dist[N] + 1, INT_MAX / 2);
-
-    int tmp1, tmp2, tmp3;
-    for (int i = 0; i < M; i++) {
-        cin >> tmp1 >> tmp2 >> tmp3;
-        edges[tmp1].emplace_back(tmp3, tmp2);
+    int u, v, w;
+    for (int i = 1; i <= E; i++) {
+        cin >> u >> v >> w;
+        edges[u].emplace_back(w, v);
     }
 
-    cin >> start >> fin;
+    cin >> K >> T;
+
+    for (int i = 1; i <= V; i++)
+        sort(edges[i].begin(), edges[i].end());
+
+
+    fill(&dist[0], &dist[20001], INT_MAX / 2);
 
     BFS();
 
-    cout << dist[fin];
+    cout << dist[T] << endl;
 
     return 0;
 }
