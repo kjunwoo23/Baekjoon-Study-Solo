@@ -29,6 +29,7 @@ int main() {
 
     sort(T.begin(), T.end());
 
+    // 완전 탐색, but 모기 입장/퇴장 시간만
     int curCnt = 0;
     ll curTime = 0;
     bool isMax = false;
