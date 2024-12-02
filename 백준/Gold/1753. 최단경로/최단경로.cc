@@ -1,73 +1,66 @@
-#include <iostream>
-#include <algorithm>
-#include <cstdio>
-#include <functional>
-#include <climits>
-#include <cmath>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <tuple>
-#include <list>
-#include <set>
-#include <map>
-#pragma warning(disable:4996)
+#include <bits/stdc++.h>
+#define endl '\n'
+typedef long long ll;
+
 using namespace std;
 
-int V;
-int E;
-int K;
-
-vector<tuple<int, int>> edges[20001];
-int dist[20001] = { 0 };
-
-priority_queue<tuple<int, int>, vector<tuple<int, int>>, greater<tuple<int, int>>> waitList;
-
-void BFS(int start) {
-
-	waitList.emplace(0, start);
-	dist[start] = 0;
-
-	while (!waitList.empty()) {
-		int curDist = get<0>(waitList.top());
-		int curNode = get<1>(waitList.top());
-		waitList.pop();
-
-		for (int i = 0; i < edges[curNode].size(); i++) {
-			if (dist[curNode] + get<0>(edges[curNode][i]) < dist[get<1>(edges[curNode][i])]) {
-				dist[get<1>(edges[curNode][i])] = dist[curNode] + get<0>(edges[curNode][i]);
-				waitList.emplace(dist[get<1>(edges[curNode][i])], get<1>(edges[curNode][i]));
-			}
-		}
-	}
+void init() {
+    cin.tie(0);
+    cout.tie(0);
+    ios_base::sync_with_stdio(false);
 }
 
+int V, E, K;
+int dist[20001];
+vector<pair<int, int>> edges[20001];
+
+
+void BFS() {
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> waitList;
+
+    waitList.emplace(0, K);
+    dist[K] = 0;
+
+    while (!waitList.empty()) {
+        int curDist = waitList.top().first;
+        int curNode = waitList.top().second;
+        waitList.pop();
+
+        for (int i = 0; i < edges[curNode].size(); i++) {
+            if (dist[edges[curNode][i].second] > curDist + edges[curNode][i].first) {
+                dist[edges[curNode][i].second] = curDist + edges[curNode][i].first;
+                waitList.emplace(curDist + edges[curNode][i].first, edges[curNode][i].second);
+
+            }
+        }
+    }
+}
 
 int main() {
-	ios_base::sync_with_stdio(false);
-	cin.tie(nullptr);
+    init();
 
-	scanf("%d%d%d", &V, &E, &K);
-	//cin >> V >> E >> K;
+    cin >> V >> E >> K;
 
-	int tmp1, tmp2, tmp3;
-	for (int i = 0; i < E; i++) {
-		scanf("%d%d%d", &tmp1, &tmp2, &tmp3);
+    int u, v, w;
+    for (int i = 1; i <= E; i++) {
+        cin >> u >> v >> w;
+        edges[u].emplace_back(w, v);
+    }
 
-		edges[tmp1].emplace_back(tmp3, tmp2);
-	}
+    for (int i = 1; i <= V; i++)
+        sort(edges[i].begin(), edges[i].end());
 
-	for (int i = 1; i < V + 1; i++)
-		sort(edges[i].begin(), edges[i].end());
 
-	fill(dist, dist + 20001, INT_MAX - 11);
-	BFS(K);
+    fill(&dist[0], &dist[20001], INT_MAX / 2);
 
-	for (int i = 1; i < V + 1; i++)
-		if (dist[i] != INT_MAX - 11)
-			printf("%d\n", dist[i]);
-		else
-			printf("INF\n");
+    BFS();
 
-	return 0;
+    for (int i = 1; i <= V; i++) {
+        if (dist[i] == INT_MAX / 2)
+            cout << "INF" << endl;
+        else
+            cout << dist[i] << endl;
+    }
+
+    return 0;
 }
