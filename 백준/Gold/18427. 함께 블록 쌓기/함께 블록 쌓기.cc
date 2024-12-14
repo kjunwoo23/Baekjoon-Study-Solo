@@ -17,7 +17,7 @@ int dp[51][1001];
 
 int jaegui(int student, int curHeight) {
     if (curHeight == H)   return 1;
-    if (student >= N + 1) return 0;
+    if (student >= N) return 0;
 
     if (dp[student][curHeight] != -1)
         return dp[student][curHeight];
